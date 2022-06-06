@@ -45,8 +45,16 @@ curl https://raw.githubusercontent.com/VitalPBX/VPS/vitalpbx-3/resources/vitalpb
 systemctl start mariadb
 
 # Install Intelbras pre-requisites
-curl https://raw.githubusercontent.com/VitalPBX/VPS/vitalpbx-3/resources/pack_list --output pack_list --silent
+curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/pack_list --output pack_list --silent
 yum -y install $(cat pack_list)
+
+#################################################################################################
+
+# curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/Ftp.sh --output Ftp.sh --silent
+# chmod +x Ftp.sh
+# ./Ftp.sh
+#Se der certo, tirar o reboot do arquivo SH.
+#################################################################################################
 
 # Enable and Start Firewall
 systemctl enable firewalld
@@ -86,23 +94,7 @@ firewall-cmd --add-service=http
 firewall-cmd --reload
 
 #Instalação FTP by Intelbras
-caminhoproftpd="/etc/sysconfig/proftpd"
-if [ -e !$caminhoproftpd ]
-then
-yum -y install proftpd &
-pid=$!
-wait $pid
-echo $pid was terminated.
 
-else
-echo "O caminho /etc/sysconfig/proftpd ja existe, proftpd não instalado"
-fi
-# Enable and Start Firewall
-firewall-cmd --add-service=ftp --permanent --zone=public
-firewall-cmd --reload
-# Enable and Start Proftpd
-systemctl start proftpd
-systemctl enable proftpd
 
 
 # Reboot System to Make Selinux Change Permanently
