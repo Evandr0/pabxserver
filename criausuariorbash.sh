@@ -12,9 +12,9 @@ sleep 1
 #adicionar usuario rbash nome pabxserver
 #useradd maria1 -s /bin/rbash; (echo maria123; echo maria123) | passwd maria1
 
-sudo useradd pabxserver -d /home/pabxserver -m -s /bin/rbash -k /etc/skel && (echo pabxserver@intelbras; echo pabxserver@intelbras) | passwd pabxserver
+sudo useradd pabxserver -d /home/pabxserver -m -s /bin/rbash && (echo pabxserver@intelbras; echo pabxserver@intelbras) | passwd pabxserver
 sleep 2
-#cp -r /etc/skell /home/pabxserver
+cp /etc/skel/.* /home/pabxserver/
 mkdir -p /home/pabxserver/bin
 mkdir -p /home/pabxserver/sbin
 
