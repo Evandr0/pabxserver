@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/inicial.sh -O --silent && sleep 5 && sed -i 's/\r$//' inicial.sh && chmod +x inicial.sh && ./inicial.sh
 #Script instala Pabxserver e chama outros pacotes de instalação. 
 #Importa criarusuarioftp.sh e cria a home do usuario pabxserver.
