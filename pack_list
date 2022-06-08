@@ -45,6 +45,7 @@ php-pecl-imagick
 php-process
 php-xml
 python-inotify
+proftpd
 screen
 tcpdump
 telnet
@@ -53,11 +54,10 @@ nano
 net-tools
 rsync
 sudo
+sngreo
 vim
 usbutils
 which
 wget
 zip
 unzip
-sngrep
-proftpd
