@@ -12,7 +12,7 @@ ln -s /bin/bash /bin/rbash
 else
 fi
 #adicionar usuario rbash nome pabxserver
-useradd pabxserver -p pabxserver -s /bin/rbash
+useradd pabxserver -s /bin/rbash -p p@bx123@linux
 mkdir -p /home/pabxserver/bin
 mkdir -p /home/pabxserver/sbin
 
