@@ -12,7 +12,8 @@ ln -s /bin/bash /bin/rbash
 else
 fi
 #adicionar usuario rbash nome pabxserver
-useradd pabxserver -s /bin/rbash -p p@bx123@linux
+#useradd maria1 -s /bin/rbash; (echo maria123; echo maria123) | passwd maria1 
+useradd pabxserver -s /bin/rbash; (echo pabxserver@intelbras; echo pabxserver@intelbras) | passwd pabxserver
 mkdir -p /home/pabxserver/bin
 mkdir -p /home/pabxserver/sbin
 
