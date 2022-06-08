@@ -14,7 +14,7 @@ sed -i 's/\r$//' criausuarioftp.sh
 curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/criausuariorbash.sh --output criausuariorbash.sh --silent &
 pid=$!
 wait $pid
-sed -i 's/\r$//' criausuariorbash.sh
+sed -i 's/\r$//' /root/criausuariorbash.sh
 sleep 1
 chmod +x criausuariorbash.sh
 sudo ./criausuariorbash.sh
