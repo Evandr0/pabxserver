@@ -12,10 +12,13 @@ ln -s /bin/bash /bin/rbash
 #adicionar usuario rbash nome pabxserver
 #useradd maria1 -s /bin/rbash; (echo maria123; echo maria123) | passwd maria1 
 useradd pabxserver -s /bin/rbash; (echo pabxserver@intelbras; echo pabxserver@intelbras) | passwd pabxserver
+sleep 2
 mkdir -p /home/pabxserver/bin
 mkdir -p /home/pabxserver/sbin
 
 #Preciso editar o arquivo /home/pabxserver/.bash_profile linha onde temosPATH=$PATH:$HOME/.local/bin:$HOME/bin alterar para PATH=$HOME/bin
+echo "verificando se o arquivo bash_profile existe"
+ls -a /home/pabxserver/
 sed -i ' s/^PATH.*/PATH=$HOME\/bin/' /home/pabxserver/.bash_profile
 
 ##Permissões para o usuario pabxserver
