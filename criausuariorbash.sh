@@ -9,7 +9,6 @@ caminhorbash="/bin/rbash"
 if [ -e !$caminhorbash ]
 then
 ln -s /bin/bash /bin/rbash
-else
 fi
 #adicionar usuario rbash nome pabxserver
 #useradd maria1 -s /bin/rbash; (echo maria123; echo maria123) | passwd maria1 
