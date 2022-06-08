@@ -22,7 +22,8 @@ wait $pid
 sleep 1
 chmod +x criausuariorbash.sh
 sleep 1
-echo "vai dar o comando sed agora"
+echo "######################vai dar o comando sed agora"
+sleep 1
 sed -i 's/\r$//' /root/criausuariorbash.sh
 
 sudo ./criausuariorbash.sh
