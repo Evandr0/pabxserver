@@ -47,7 +47,7 @@ systemctl start mariadb
 # Install Intelbras pre-requisites
 curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/pack_list --output pack_list --silent
 yum -y install $(cat pack_list)
-
+yum install sngrep -y
 #################################################################################################
 
 # curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/Ftp.sh --output Ftp.sh --silent
@@ -57,6 +57,11 @@ yum -y install $(cat pack_list)
 #################################################################################################
 
 # Enable and Start Firewall
+firewall-cmd --add-service=ftp --permanent --zone=public &
+pid=$!
+wait $pid
+echo $pid was terminated.
+firewall-cmd --reload
 systemctl enable firewalld
 systemctl start firewalld
 
