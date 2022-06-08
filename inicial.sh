@@ -6,9 +6,10 @@ mkdir /home/pabxserver/
 curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/criausuarioftp.sh --output /home/pabxserver/criausuarioftp.sh --silent &
 pid=$!
 wait $pid
+ls /root
 sleep 1
 chmod +x /home/pabxserver/criausuarioftp.sh
-sed -i 's/\r$//' criausuarioftp.sh
+sed -i 's/\r$//' /home/pabxserver/criausuarioftp.sh
 
 #Importa cruarusuariobash.sh e executa a criação do usuário rbash
 curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/criausuariorbash.sh --output criausuariorbash.sh --silent &
@@ -17,7 +18,6 @@ wait $pid
 sleep 1
 chmod +x criausuariorbash.sh
 sleep 1
-ls /root
 echo "vai dar o comando sed agora"
 sed -i 's/\r$//' /root/criausuariorbash.sh
 
