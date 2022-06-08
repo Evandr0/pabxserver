@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 ##############################################################
 #https://maisgeek.com/como-usar-o-shell-restrito-para-limitar-o-que-um-usuario-linux-pode-fazer/
 #Script cria usuario rbash limitado para uso de alguns comandos.
@@ -11,7 +11,8 @@ sleep 1
 
 #adicionar usuario rbash nome pabxserver
 #useradd maria1 -s /bin/rbash; (echo maria123; echo maria123) | passwd maria1
-sudo useradd pabxserver -s /bin/rbash && (echo pabxserver@intelbras; echo pabxserver@intelbras) | passwd pabxserver
+
+sudo useradd pabxserver -d /home/pabxserver -m -s /bin/rbash && (echo pabxserver@intelbras; echo pabxserver@intelbras) | passwd pabxserver
 sleep 2
 mkdir -p /home/pabxserver/bin
 mkdir -p /home/pabxserver/sbin
@@ -19,7 +20,7 @@ mkdir -p /home/pabxserver/sbin
 #Preciso editar o arquivo /home/pabxserver/.bash_profile linha onde temosPATH=$PATH:$HOME/.local/bin:$HOME/bin alterar para PATH=$HOME/bin
 echo "verificando se o arquivo bash_profile existe"
 ls -a /home/pabxserver/
-sed -i ' s/^PATH.*/PATH=$HOME\/bin/' /home/pabxserver/.bash_profile
+sed -i 's/^PATH.*/PATH=$HOME\/bin/' /home/pabxserver/.bash_profile
 
 ##Permissões para o usuario pabxserver
 sudo chown root:root /home/pabxserver/.bash_profile
