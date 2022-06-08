@@ -11,8 +11,8 @@ echo -e "\e[0;32m"""
 echo -n "Criando o usuario bilhetes para utilização do FTP: "
 echo
 echo -e "\e[0;37m"""
-mkdir /home/ftp/cdr
-sudo useradd -d /home/ftp/cdr/ -s /dev/null cdr -p cdr
+mkdir /home/ftp/bilhetes
+sudo useradd -d /home/ftp/bilhetes/ -s /dev/null bilhetes -p bilhetes
 sudo passwd bilhetes
 
 echo -e "\e[0;32m"""
