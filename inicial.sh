@@ -15,9 +15,12 @@ curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/criausuariorbash.
 pid=$!
 wait $pid
 sleep 1
-sed -i 's/\r$//' /root/criausuariorbash.sh
-sleep 1
 chmod +x criausuariorbash.sh
+sleep 1
+ls /root
+echo "vai dar o comando sed agora"
+sed -i 's/\r$//' /root/criausuariorbash.sh
+
 sudo ./criausuariorbash.sh
 #importar senha.sh
 
