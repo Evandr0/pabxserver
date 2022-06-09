@@ -64,8 +64,7 @@ pid=$!
 wait $pid
 echo $pid was terminated.
 firewall-cmd --reload
-systemctl enable firewalld
-systemctl start firewalld
+
 
 # Clean Cache Again
 yum clean all
@@ -101,6 +100,7 @@ firewall-cmd --add-service=http
 firewall-cmd --reload
 
 #Instalação FTP by Intelbras
+echo "Start proftpd"
 systemctl start proftpd
 systemctl enable proftpd
 
