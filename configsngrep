@@ -1,0 +1,31 @@
+set background dark
+set syntax on
+set syntax.tag off
+set syntax.branch off
+set hintkeyalt off
+set colormode request
+set exitprompt on
+set displayalias off
+set capture.limit 20000
+set sip.noincomplete on
+set savepath /usr/share/vitalpbx/www/
+set cf.forceraw on
+set cf.highlight bold
+set cf.localhighlight on
+set cf.splitcallid off
+set cf.sdpinfo off
+set cf.deltatime on
+set cf.media off
+set cf.scrollstep 4
+set eep.send off
+set eep.send.version 3
+set eep.send.address 127.0.0.1
+set eep.send.port 9060
+set eep.send.pass
+set eep.send.id 2002
+set eep.listen off
+set eep.listen.version 3
+set eep.listen.address 0.0.0.0
+set eep.listen.port 9060
+set eep.listen.pass
+set eep.listen.uuid off
