@@ -1,7 +1,7 @@
 #!/bin/bash
 #Programa que será executado por um usuário para que seja criado um usuario exclusivo para o FTP.
 #Será criado o usuario bilhetes e ele somente terá acesso a utilização do ftp.
-#precisa dar permissão para o usuario rbash no sudoers
+#precisa dar permissão para o usuario rbash no sudoers para que esse comando funcione para o usuario desejado
 #https://maisgeek.com/como-usar-o-shell-restrito-para-limitar-o-que-um-usuario-linux-pode-fazer/  
 #http://ptcomputador.com/Networking/ftp-telnet/66521.html criar usuario somente FTP
 #https://under-linux.org/showthread.php?t=54214 Script
