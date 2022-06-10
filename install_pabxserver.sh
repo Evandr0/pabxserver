@@ -108,9 +108,9 @@ systemctl enable proftpd
 #Alterar porta SSH para 16022
 #Alem disso, o usuario deverá alterar a porta do serviço SSH na página web
 sed -i 's/^#Port.*/Port 16022/' /etc/ssh/sshd_config
-firewall-cmd --zone=public --add-port=16022/tcp
+firewall-cmd --zone=public --add-port=16022/tcp --permanent
 firewall-cmd --reload
-
+systemctl restart sshd
 #Alterar pasta padrão de salvamento sngrep
 sed -i 's/^set savepath.*/set savepath /usr/share/vitalpbx/www/' /root/.sngreprc
 

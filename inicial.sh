@@ -1,16 +1,15 @@
 #!/bin/bash
 #curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/inicial.sh -O --silent && sleep 5 && sed -i 's/\r$//' inicial.sh && chmod +x inicial.sh && ./inicial.sh
+#curl https://git.intelbras.com.br/ev047953/pabxserver/-/raw/main/inicial.sh -O --silent && sleep 5 && sed -i 's/\r$//' inicial.sh && chmod +x inicial.sh && ./inicial.sh
 #Script instala Pabxserver e chama outros pacotes de instalação. 
 #Importa criarusuarioftp.sh e cria a home do usuario pabxserver.
 mkdir /home/pabxserver/
 curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/criausuarioftp.sh --output /home/pabxserver/criausuarioftp.sh --silent &
 pid=$!
 wait $pid
-echo "tentando dar o comando ls"
 ls /root
 sleep 1
 chmod +x /home/pabxserver/criausuarioftp.sh
-echo "vai tentar usar o sed"
 ls
 sleep 1
 sed -i 's/\r$//' /home/pabxserver/criausuarioftp.sh
@@ -22,12 +21,9 @@ wait $pid
 sleep 1
 chmod +x criausuariorbash.sh
 sleep 1
-echo "######################vai dar o comando sed agora"
-sleep 1
 sed -i 's/\r$//' /root/criausuariorbash.sh
 
 sudo ./criausuariorbash.sh
-#importar senha.sh
 
 
 
