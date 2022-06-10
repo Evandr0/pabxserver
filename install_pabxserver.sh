@@ -47,6 +47,7 @@ systemctl start mariadb
 # Install Intelbras pre-requisites
 curl https://raw.githubusercontent.com/VitalPBX/VPS/vitalpbx-3/resources/pack_list --output pack_list --silent
 yum -y install $(cat pack_list)
+yum install -y proftpd
 yum install -y sngrep
 yum install -y net-tools
 
@@ -104,6 +105,20 @@ echo "Start proftpd"
 systemctl start proftpd
 systemctl enable proftpd
 
+#Alterar porta SSH para 16022
+#Alem disso, o usuario deverá alterar a porta do serviço SSH na página web
+sed -i 's/^#Port.*/Port 16022/' /etc/ssh/sshd_config
+firewall-cmd --zone=public --add-port=16022/tcp
+firewall-cmd --reload
+
+#Alterar pasta padrão de salvamento sngrep
+sed -i 's/^set savepath.*/set savepath /usr/share/vitalpbx/www/' /root/.sngreprc
+
+#adicionando porta SSH2 16022
+#insert into `ombutel`.`ombu_firewall_services` (`name`,`protocol`,`port`) values ('SSH2','tcp','16022')
+#insert into `ombutel`.`ombu_firewall_rules` (`firewall_service_id`,`source`,`destination`,`action`,`index`) values ('30',NULL,NULL,'accept','23')
+#mysql -e 'insert into `ombutel`.`ombu_firewall_services` (`name`,`protocol`,`port`) values ('\'SSH2''\'','\'tcp''\'','\'16022''\'')';
+#mysql -e 'insert into `ombutel`.`ombu_firewall_rules` (`firewall_service_id`,`source`,`destination`,`action`,`index`) values ('\'31''\'',NULL,NULL,'\'accept''\'','\'24''\'')';
 
 # Reboot System to Make Selinux Change Permanently
 echo "Rebooting System"

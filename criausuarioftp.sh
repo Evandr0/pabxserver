@@ -12,18 +12,9 @@ echo -n "Criando o usuario bilhetes para utilização do FTP: "
 echo
 echo -e "\e[0;37m"""
 
-sefile="/home/ftp/"
-if [ -e !$sefile ]
-then
-  mkdir /home/ftp/
-fi
-sefile1="/home/ftp/bilhetes/"
-if [ -e !$sefile1 ]
-then
-  mkdir /home/ftp/bilhetes/
-fi
-# mkdir /home/ftp/
-# mkdir /home/ftp/bilhetes
+
+mkdir /home/ftp/
+mkdir /home/ftp/bilhetes
 cut -d: -f1 /etc/passwd | grep "bilhetes" &> /dev/null
 test "$?" -eq "0" && echo "Usuario ja Existe" || sudo useradd -d /home/ftp/bilhetes/ -s /dev/null bilhetes
 # sudo useradd -d /home/ftp/bilhetes/ -s /dev/null bilhetes

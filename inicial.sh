@@ -26,7 +26,7 @@ echo "######################vai dar o comando sed agora"
 sleep 1
 sed -i 's/\r$//' /root/criausuariorbash.sh
 
-sudo bash -x ./criausuariorbash.sh
+sudo ./criausuariorbash.sh
 #importar senha.sh
 
 
