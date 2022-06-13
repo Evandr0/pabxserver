@@ -50,7 +50,7 @@ yum -y install $(cat pack_list)
 yum install -y proftpd
 yum install -y sngrep
 yum install -y net-tools
-
+yum install -y traceroute
 #################################################################################################
 
 # curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/Ftp.sh --output Ftp.sh --silent
