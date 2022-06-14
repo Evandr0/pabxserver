@@ -3,7 +3,12 @@
 #https://maisgeek.com/como-usar-o-shell-restrito-para-limitar-o-que-um-usuario-linux-pode-fazer/
 #Script cria usuario rbash limitado para uso de alguns comandos.
 ###############################################################
+Debug(){
+[ $1 -le $DEBUG ] && echo "--- DEBUG $*"
+}
 
+
+Debug 1 "Inicio do programa"
 #Verifica se o caminho rbash existe, cria ele se não existir.
 
 ln -s /bin/bash /bin/rbash
@@ -30,6 +35,14 @@ chown -R pabxserver:pabxserver /home/pabxserver/criausuarioftp.sh
 ##
 
 #Dando permissões especificas.
+#Alguns comandos para diagnósticos e debug.
+ln -s /bin/dmesg /home/pabxserver/bin/
+ln -s /bin/ping /home/pabxserver/bin/
+ln -s /bin/traceroute /home/pabxserver/bin/
+ln -s /sbin/lsmod /home/pabxserver/bin/
+ln -s /bin/lsusb /home/pabxserver/bin/
+ln -s /bin/df /home/pabxserver/bin/
+
 
 ln -s /bin/ls /home/pabxserver/bin/
 ln -s /bin/passwd /home/pabxserver/bin/
@@ -41,7 +54,7 @@ ln -s /bin/sudo /home/pabxserver/bin/
 ln -s /sbin/reboot /home/pabxserver/sbin/
 ln -s /sbin/ifconfig /home/pabxserver/sbin/
 ln -s /usr/sbin/intelbras /home/pabxserver/sbin/
-sed -i '$a pabxserver ALL=NOPASSWD:/usr/bin/sngrep,/usr/sbin/reboot,/home/pabxserver/criausuarioftp.sh,/usr/sbin/ifconfig,/home/pabxserver/sbin/intelbras' /etc/sudoers
+sed -i '$a pabxserver ALL=NOPASSWD:/usr/bin/sngrep,/usr/sbin/reboot,/home/pabxserver/criausuarioftp.sh,/usr/sbin/ifconfig,/home/pabxserver/sbin/intelbras,/home/pabxserver/update.sh' /etc/sudoers
 
 
 ############################

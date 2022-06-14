@@ -3,7 +3,11 @@
 # https://maisgeek.com/como-usar-o-shell-restrito-para-limitar-o-que-um-usuario-linux-pode-fazer/ #
 # Script cria usuario devel rbash limitado para uso de alguns comandos + su                       #
 ###################################################################################################
+Debug(){
+[ $1 -le $DEBUG ] && echo "--- DEBUG $*"
+}
 
+Debug 1 "Inicio"
 #Cria o caminho rbash.
 
 ln -s /bin/bash /bin/rbash
@@ -18,7 +22,7 @@ mkdir -p /home/devel/bin
 mkdir -p /home/devel/sbin
 
 #Preciso editar o arquivo /home/devel/.bash_profile linha onde temosPATH=$PATH:$HOME/.local/bin:$HOME/bin alterar para PATH=$HOME/bin
-echo "verificando se o arquivo bash_profile existe"
+Debug 1 "verificando se o arquivo bash_profile existe"
 ls -a /home/devel/
 sed -i 's/^PATH.*/PATH=$HOME\/bin/' /home/devel/.bash_profile
 

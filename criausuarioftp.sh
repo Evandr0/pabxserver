@@ -6,11 +6,17 @@
 #http://ptcomputador.com/Networking/ftp-telnet/66521.html criar usuario somente FTP
 #https://under-linux.org/showthread.php?t=54214 Script
 #Arquivo deve existir na home do usuário /home/pabxserver/CriaUsuarioFTP.sh
+Debug(){
+[ $1 -le $DEBUG ] && echo "--- DEBUG $*"
+}
+###########################
 
-echo -e "\e[0;32m"""
-echo -n "Criando o usuario bilhetes para utilização do FTP: "
-echo
-echo -e "\e[0;37m"""
+
+#echo -e "\e[0;32m"""
+#echo -n "Criando o usuario bilhetes para utilização do FTP: "
+#echo
+#echo -e "\e[0;37m"""
+Debug 1 "Criando o usuario bilhetes para utilização do FTP"
 
 
 mkdir /home/ftp/
@@ -20,9 +26,10 @@ test "$?" -eq "0" && echo "Usuario ja Existe" || sudo useradd -d /home/ftp/bilhe
 # sudo useradd -d /home/ftp/bilhetes/ -s /dev/null bilhetes
 sudo passwd bilhetes
 
-echo -e "\e[0;32m"""
-echo -n "!!! Login = bilhetes "
-echo -e "\e[0;37m"""
+Debug 1 "Login = bilhetes"
+# echo -e "\e[0;32m"""
+# echo -n "!!! Login = bilhetes "
+# echo -e "\e[0;37m"""
 
 # Digite o comando " vi /etc /shells " para abrir o arquivo "/etc/shells " no editor de texto vi . 
 # Substitua o " vi" com seu editor de texto preferido. Adicione a linha " /dev /null " para o final do arquivo . Salvar e fechar o arquivo.
