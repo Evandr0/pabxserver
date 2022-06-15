@@ -21,4 +21,15 @@ ls, top, uptime, passwd, lsmod, dmesg, lsusb, df, ping, traceroute,
 Comandos disponíveis com sudo
 ifconfig, sngrep, ./criausuarioftp.sh, reboot, intelbras, ./update.sh
 
+Comando intelbras
+        reset-pwd [username]    (Comando para reset da senha do usuáruio WEB.)
+        build-db                (Execute uma série de scripts para construir o banco de dados PABXServer (apply_patches)
+        dump-conf               (Descarregue as configurações do Asterisk e reconstrua o banco de dados do Asterisk (somente Tenant principal)
+        fully-dump-conf         (Descarregue as configurações do Asterisk e reconstrua o banco de dados do Asterisk)
+        check-integrity         (O comando para verificar a integridade do ambiente, verifica a integridade de cada Locatário e define as permissões corretas para o proprietário/grupo para as pastas.)
+        update-pbx              (Atualiza o PBX)
+        apply-firewall          (Aplicar regras de firewall)
+        restore-backup          (Restaura um backup salvo, necessário especificar o caminho do arquivo | /var/lib/vitalpbx/backup/ )
+        reset-apache-conf       (Restaura as configurações do apache, geralmente utilizado quando tiver algum problema com certificado https)
+
 Sobre o SNGREP. Pasta padrão de salvamento será a pasta /usr/share/vitalpbx/www/ isso faz com que seja possível baixar o arquivo diretamente do navegador WEB acessando o IP do equipamento/nomedoarquivo.pcap
