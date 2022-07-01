@@ -117,7 +117,17 @@ chmod +x /home/pabxserver/cleanall.sh
 ###########
 #
 #ADICIONAR SCRIPT HA
+curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/pabxserverha.sh --output /home/pabxserver/pabxserverha.sh --silent &
+pid=$!
+wait $pid
 
+
+curl URL --output /home/pabxserver/HA.sh --silent &
+pid=$!
+wait $pid
+chmod +x /home/pabxserver/HA.sh
+sleep 1
+sed -i 's/\r$//' /home/pabxserver/HA.sh
 #
 #baixa script para usuario pabxserver pode fazer update do linux - UPDATE
 echo yum -y update > /home/pabxserver/update.sh
