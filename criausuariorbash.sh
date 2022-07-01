@@ -55,7 +55,7 @@ ln -s /sbin/reboot /home/pabxserver/sbin/
 ln -s /sbin/ifconfig /home/pabxserver/sbin/
 ln -s /usr/sbin/intelbras /home/pabxserver/sbin/
 ln -s /usr/sbin/route /home/pabxserver/sbin/
-ln -s /home/pabxserver/logs /usr/share/vitalpbx/www/
+
 sed -i '$a pabxserver ALL=NOPASSWD:/usr/bin/sngrep,/home/pabxserver/pabxserverha.sh,/home/pabxserver/cleanall.sh,/usr/sbin/route,/usr/sbin/reboot,/home/pabxserver/criausuarioftp.sh,/usr/sbin/ifconfig,/home/pabxserver/sbin/intelbras,/home/pabxserver/update.sh,/home/pabxserver/logs.sh,/usr/sbin/asterisk' /etc/sudoers
 
 

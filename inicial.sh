@@ -172,4 +172,7 @@ curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/configsngrep --si
 sed -i 's/\r$//' /root/.sngreprc
 
 #Instala PABXSERVER
-curl -fsSL http://repo.vitalpbx.org/vitalpbx/WL/intelbras/v3/vps/install.sh | bash -
+#curl -fsSL http://repo.vitalpbx.org/vitalpbx/WL/intelbras/v3/vps/install.sh | bash -
+wget https://raw.githubusercontent.com/Evandr0/pabxserver/main/install.sh --output install.sh
+chmod +x install.sh
+sudo ./install.sh
