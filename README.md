@@ -48,4 +48,4 @@ Comando ./criausuarioftp.sh
         Cria o usuario bilhetes para o FTP. (Necessário para configuração de tarifação/controller)
 
 
-Sobre o SNGREP. Pasta padrão de salvamento será a pasta /usr/share/vitalpbx/www/ isso faz com que seja possível baixar o arquivo diretamente do navegador WEB acessando o IP do equipamento/nomedoarquivo.pcap - Criado link simbólico /home/pabxserver/logs
+Sobre o SNGREP. Pasta padrão de salvamento será a pasta /usr/share/vitalpbx/www/ isso faz com que seja possível baixar o arquivo diretamente do navegador WEB acessando o IP do equipamento/logs/nomedoarquivo.pcap - Criado link simbólico /home/pabxserver/logs
