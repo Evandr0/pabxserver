@@ -106,22 +106,15 @@ echo yum -y install corosync pacemaker pcs lsyncd vitalpbx-high-availability > /
 chmod +x /home/pabxserver/passo1.sh
 
 #Passo 2 - criação ssh-keygen
-newfile=/home/pabxserver/passo2.sh
-(
-<< 'EOF'
-ssh-keygen -f /root/.ssh/id_rsa -t rsa -N '' > /dev/null
-EOF
-)
-> $newfile
+
+echo ssh-keygen -f /root/.ssh/id_rsa -t rsa -N "''" > /home/pabxserver/passo2.sh
 chmod +x /home/pabxserver/passo2.sh
 
 #Passo 3 - ssh-copy-id to server
-(
-<< 'EOF'
-sshpass -p centos ssh-copy-id -p 16022 root@$1
-EOF
-)
-> /home/pabxserver/passo3.sh
+cat > '/home/pabxserver/passo3.sh' << 'ADDTEXT'
+sshpass -p centos ssh-copy-id -o StrictHostKeyChecking=no root@$1 -p 16022 
+ADDTEXT
+
 chmod +x /home/pabxserver/passo3.sh
 
 curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/pabxserverhap22.sh --output /home/pabxserver/pabxserverhap22.sh --silent &
@@ -170,6 +163,7 @@ firewall-cmd --reload
 echo "Start proftpd"
 systemctl start proftpd
 systemctl enable proftpd
+
 #Alterar porta SSH para 16022
 
 sed -i 's/^#Port.*/Port 16022/' /etc/ssh/sshd_config
