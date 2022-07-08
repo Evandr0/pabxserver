@@ -99,7 +99,7 @@ echo -e "************************************************************"
 echo -e "*            Get the hostname in Master and Standby         *"
 echo -e "************************************************************"
 host_master=`hostname -f`
-host_standby=`mysqssh -p 16022 root@$ip_standby 'hostname -f'`
+host_standby=`ssh -p 16022 root@$ip_standby 'hostname -f'`
 echo -e "$host_master"
 echo -e "$host_standby"
 echo -e "*** Done ***"
