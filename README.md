@@ -49,3 +49,31 @@ Comando ./criausuarioftp.sh
 
 
 Sobre o SNGREP. Pasta padrão de salvamento será a pasta /usr/share/vitalpbx/www/ isso faz com que seja possível baixar o arquivo diretamente do navegador WEB acessando o IP do equipamento/logs/nomedoarquivo.pcap - Criado link simbólico /home/pabxserver/logs
+
+
+Comandos HA (Redundância/Alta disponibilidade)
+Comandos para instalação. Necessário seguir a ordem.
+Seguir os passos:
+        Passo 1
+        - na máquina 1: Via ssh, através do login pabxserver, digite: sudo ./passo1.sh
+        - na máquina 2: Via ssh, através do login pabxserver, digite: sudo ./passo1.sh
+
+        Passo 2
+        - na máquina 1: Via ssh, através do login pabxserver, digite: sudo ./passo2.sh
+        - na máquina 2: Via ssh, através do login pabxserver, digite: sudo ./passo2.sh
+
+        Passo 3
+        - na máquina 1: Via ssh, através do login pabxserver, digite: sudo ./passo3.sh IP_DA_MAQUINA_2
+        - na máquina 2: Via ssh, através do login pabxserver, digite: sudo ./passo3.sh IP_DA_MAQUINA_1
+
+        Passo 4
+        - na máquina 1: Via ssh, através do login pabxserver, digite: sudo ./pabxserverhap22.sh
+        - Siga as instruções.
+
+        Comandos adicionais:
+        Comando sudo ./role     
+        - Mostra informações da máquina em questão.
+
+        Comando sudo ./bascul
+        - Altera a o estado da máquina atual. Se ela for a master passa a ser a máquina Standby.
+

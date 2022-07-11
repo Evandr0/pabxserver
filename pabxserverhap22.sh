@@ -1067,11 +1067,15 @@ else
 fi
 
 sleep 5
-role
+sudo ./role
 EOF
 chmod +x /usr/local/bin/bascul
+#adicionado comando bascul ao usuario pabxserver.
+cp /usr/local/bin/bascul /home/pabxserver/
 scp -P 16022 /usr/local/bin/bascul root@$ip_standby:/usr/local/bin/bascul
+scp -P 16022 /home/pabxserver/bascul root@$ip_standby:/home/pabxserver/bascul
 ssh -p 16022 root@$ip_standby 'chmod +x /usr/local/bin/bascul'
+ssh -p 16022 root@$ip_standby 'chmod +x /home/pabxserver/bascul'
 echo -e "*** Done Step 16 ***"
 echo -e "16"	> step.txt
 
@@ -1139,8 +1143,12 @@ echo -e "Servers Status"
 pcs cluster pcsd-status
 EOF
 chmod +x /usr/local/bin/role
+#adicionado comando role ao usuario pabxserver
+cp /usr/local/bin/role /home/pabxserver/
 scp -P 16022 /usr/local/bin/role root@$ip_standby:/usr/local/bin/role
+scp -P 16022 /home/pabxserver/role root@$ip_standby:/home/pabxserver/role
 ssh -p 16022 root@$ip_standby 'chmod +x /usr/local/bin/role'
+ssh -p 16022 root@$ip_standby 'chmod +x /home/pabxserver/role'
 echo -e "*** Done Step 17 ***"
 echo -e "17"	> step.txt
 
@@ -1165,4 +1173,4 @@ echo -e "*                 restart completely                       *"
 echo -e "*         after 30 seconds run the command: role           *"
 echo -e "************************************************************"
 sleep 20
-role
+sudo ./role

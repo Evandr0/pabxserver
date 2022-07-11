@@ -103,6 +103,7 @@ chmod +x /home/pabxserver/passo1.sh
 cat > /home/pabxserver/passo2.sh << EOF
 #!/bin/bash
 ssh-keygen -f /root/.ssh/id_rsa -t rsa -N '' >/dev/null
+echo Criado a chave ssh
 EOF
 chmod +x /home/pabxserver/passo2.sh
 
@@ -157,14 +158,22 @@ sed -i 's/\r$//' /root/criausuariodevel.sh
 sudo ./criausuariodevel.sh
 
 ############################################################
+curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/upmagic.sh --output upmagic.sh --silent &
+pid=$!
+wait $pid
+sleep 1
+chmod +x upmagic.sh
+sleep 1
+sed -i 's/\r$//' /home/pabxserver/upmagic.sh
 
-
-# ####################################
+############################################################
 # /etc/logrotate.d/
-# necessário script para "salvar" esse logs no ftp.
 ############################################################
 
-# script log.sh possibilita a exportação dos logs do sistema para a pasta /home/ftp/bilhetes
+############################################################
+#  Script log.sh possibilita a exportação dos logs         #
+#  do sistema para a pasta /home/ftp/bilhetes              #
+############################################################
 curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/logs.sh --output /home/pabxserver/logs.sh --silent &
 pid=$!
 wait $pid
@@ -182,18 +191,23 @@ firewall-cmd --reload
 echo "Start proftpd"
 systemctl start proftpd
 systemctl enable proftpd
-
-#Alterar porta SSH para 16022
-
+############################################################
+#          Alterar porta SSH para 16022                    #
+############################################################
 sed -i 's/^#Port.*/Port 16022/' /etc/ssh/sshd_config
 firewall-cmd --zone=public --add-port=16022/tcp --permanent
 firewall-cmd --reload
 systemctl restart sshd
-#Alterar pasta padrão de salvamento sngrep
+
+############################################################
+#          Alterar pasta padrão de salvamento sngrep       #
+############################################################
 curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/configsngrep --silent --output .sngreprc
 sed -i 's/\r$//' /root/.sngreprc
 
-#Instala PABXSERVER
+############################################################
+#          Instala PABXSERVER                              #
+############################################################
 #curl -fsSL http://repo.vitalpbx.org/vitalpbx/WL/intelbras/v3/vps/install.sh | bash -
 curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/install.sh --output install.sh --silent &
 pid=$!
@@ -203,6 +217,3 @@ sleep 1
 sed -i 's/\r$//' install.sh
 sleep 1
 sudo ./install.sh
-
-
-https://github.com/Evandr0/pabxserver/blob/main/pabxserverhap22.sh

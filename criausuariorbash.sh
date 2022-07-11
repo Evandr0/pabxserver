@@ -56,7 +56,7 @@ ln -s /sbin/ifconfig /home/pabxserver/sbin/
 ln -s /usr/sbin/intelbras /home/pabxserver/sbin/
 ln -s /usr/sbin/route /home/pabxserver/sbin/
 
-sed -i '$a pabxserver ALL=NOPASSWD:/usr/bin/sngrep,/home/pabxserver/passo1.sh,/home/pabxserver/passo2.sh,/home/pabxserver/passo3.sh,/home/pabxserver/pabxserverhap22.sh,/home/pabxserver/cleanall.sh,/usr/sbin/route,/usr/sbin/reboot,/home/pabxserver/criausuarioftp.sh,/usr/sbin/ifconfig,/home/pabxserver/sbin/intelbras,/home/pabxserver/update.sh,/home/pabxserver/logs.sh,/usr/sbin/asterisk' /etc/sudoers
+sed -i '$a pabxserver ALL=NOPASSWD:/usr/bin/sngrep,/home/pabxserver/magic.sh,/home/pabxserver/upmagic.sh,/home/pabxserver/role,/home/pabxserver/bascul,/home/pabxserver/passo1.sh,/home/pabxserver/passo2.sh,/home/pabxserver/passo3.sh,/home/pabxserver/pabxserverhap22.sh,/home/pabxserver/cleanall.sh,/usr/sbin/route,/usr/sbin/reboot,/home/pabxserver/criausuarioftp.sh,/usr/sbin/ifconfig,/home/pabxserver/sbin/intelbras,/home/pabxserver/update.sh,/home/pabxserver/logs.sh,/usr/sbin/asterisk' /etc/sudoers
 
 
 ############################
