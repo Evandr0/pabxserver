@@ -5,7 +5,7 @@
 # Comando para ser executado no linux -> curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/inicial.sh -O --silent && sleep 5 && sed -i 's/\r$//' inicial.sh && chmod +x inicial.sh && ./inicial.sh
 # Comando de teste no gitlab -> curl https://git.intelbras.com.br/ev047953/pabxserver/-/raw/main/inicial.sh -O --silent && sleep 5 && sed -i 's/\r$//' inicial.sh && chmod +x inicial.sh && ./inicial.sh
 # Script instala faz configuração do SO linux, criação de usuarios, ftp e comando avançados para o usuario rbash e por fim instala o software do pabxserver. 
-#Versão 1.0
+#Versão 1.1 - 14/07/2022 - 15:17
 #################### Copia o sh onde será possível criar o usuario para acesso ao FTP.
 
 
