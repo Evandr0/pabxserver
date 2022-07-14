@@ -1,5 +1,8 @@
 #!/bin/bash
-#
+# This code is the property of VitalPBX LLC Company
+# License: Proprietary
+# Date: 21-Aug-2020
+# VitalPBX Hight Availability with MariaDB Replica, Corosync, PCS, Pacemaker and Lsync
 #
 set -e
 function jumpto
@@ -11,10 +14,10 @@ function jumpto
 }
 
 echo -e "\n"
-echo -e "**********************************************************************"
-echo -e "*  Bem vindo(a) a instalação de alta disponibilidade do PABXSERVER   *"
-echo -e "*                Todas as opções são obrigatórias                    *"
-echo -e "**********************************************************************"
+echo -e "************************************************************"
+echo -e "*  Welcome to the VitalPBX high availability installation  *"
+echo -e "*                All options are mandatory                 *"
+echo -e "************************************************************"
 
 filename="config.txt"
 if [ -f $filename ]; then
@@ -72,10 +75,10 @@ do
     read -p "hacluster password....... > " hapassword 
 done
 
-echo -e "*********************************************************************"
-echo -e "*                   Verifique as informações                        *"
-echo -e "*        Certifique-se de ter internet em ambos os servidores       *"
-echo -e "*********************************************************************"
+echo -e "************************************************************"
+echo -e "*                   Check Information                      *"
+echo -e "*        Make sure you have internet on both servers       *"
+echo -e "************************************************************"
 while [[ $veryfy_info != yes && $veryfy_info != no ]]
 do
     read -p "Are you sure to continue with this settings? (yes,no) > " veryfy_info 
@@ -83,7 +86,7 @@ done
 
 if [ "$veryfy_info" = yes ] ;then
 	echo -e "************************************************************"
-	echo -e "*          Começando a executar os scripts                 *"
+	echo -e "*                Starting to run the scripts               *"
 	echo -e "************************************************************"
 else
     	exit;
@@ -98,10 +101,10 @@ $hapassword
 EOF
 
 echo -e "************************************************************"
-echo -e "*       Obtendo o nome do host em Master e Standby         *"
+echo -e "*            Get the hostname in Master and Standby         *"
 echo -e "************************************************************"
 host_master=`hostname -f`
-host_standby=`ssh root@$ip_standby 'hostname -f'`
+host_standby=`ssh -p 16022 root@$ip_standby 'hostname -f'`
 echo -e "$host_master"
 echo -e "$host_standby"
 echo -e "*** Done ***"
@@ -110,12 +113,12 @@ arg=$1
 if [ "$arg" = 'destroy' ] ;then
 
 # Print a warning message destroy cluster message
-echo -e "****************************************************************************"
+echo -e "*****************************************************************"
 echo -e "*  \e[41m WARNING-WARNING-WARNING-WARNING-WARNING-WARNING-WARNING  \e[0m   *"
-echo -e "*  Este processo destrói completamente o cluster em ambos os servidores    *"
-echo -e "*          então você pode recriá-lo com o comando                         *"
-echo -e "*              sudo ./pabxserverha.sh                                      *"
-echo -e "****************************************************************************"
+echo -e "*  This process completely destroys the cluster on both servers *"
+echo -e "*          then you can re-create it with the command           *"
+echo -e "*                     ./vpbxha.sh rebuild                       *"
+echo -e "*****************************************************************"
 	while [[ $veryfy_destroy != yes && $veryfy_destroy != no ]]
 	do
 	read -p "Are you sure you want to completely destroy the cluster? (yes, no) > " veryfy_destroy 
@@ -131,6 +134,9 @@ echo -e "***********************************************************************
 		systemctl stop pacemaker.service
 cat > /etc/profile.d/vitalwelcome.sh << EOF
 #!/bin/bash
+# This code is the property of VitalPBX LLC Company
+# License: Proprietary
+# Date: 30-Jul-2020
 # Show the Role of Server.
 #Bash Colour Codes
 green="\033[00;32m"
@@ -150,11 +156,12 @@ fi
 vpbx_version="\${vitalpbx_ver}-\${vitalpbx_release}"
 asterisk_version=\`rpm -q --qf "%{VERSION}" asterisk\`
 logo='
-    ____      __       ____
-   /  _/___  / /____  / / /_  _________ ______
-   / // __ \/ __/ _ \/ / __ \/ ___/ __ \`/ ___/
- _/ // / / / /_/  __/ / /_/ / /  / /_/ (__  )
-/___/_/ /_/\__/\___/_/_.___/_/   \__,_/____/
+ _    _ _           _ ______ ______ _    _
+| |  | (_)_        | (_____ (____  \ \  / /
+| |  | |_| |_  ____| |_____) )___)  ) \/ /
+ \ \/ /| |  _)/ _  | |  ____/  __  ( )  (
+  \  / | | |_( ( | | | |    | |__)  ) /\ \\
+   \/  |_|\___)_||_|_|_|    |______/_/  \_\\
 '
 echo -e "
 \${green}
@@ -173,15 +180,15 @@ echo -e "
 "
 EOF
 chmod 755 /etc/profile.d/vitalwelcome.sh
-scp /etc/profile.d/vitalwelcome.sh root@$ip_standby:/etc/profile.d/vitalwelcome.sh
-ssh root@$ip_standby "chmod 755 /etc/profile.d/vitalwelcome.sh"
+scp -P 16022 /etc/profile.d/vitalwelcome.sh root@$ip_standby:/etc/profile.d/vitalwelcome.sh
+ssh -p 16022 root@$ip_standby "chmod 755 /etc/profile.d/vitalwelcome.sh"
 rm -rf /usr/local/bin/bascul		
 rm -rf /usr/local/bin/role
-ssh root@$ip_standby "rm -rf /usr/local/bin/bascul"
-ssh root@$ip_standby "rm -rf /usr/local/bin/role"
-echo -e "***************************************************************"
-echo -e "*         Remover serviços/regras de firewall no Mariadb      *"
-echo -e "***************************************************************"
+ssh -p 16022 root@$ip_standby "rm -rf /usr/local/bin/bascul"
+ssh -p 16022 root@$ip_standby "rm -rf /usr/local/bin/role"
+echo -e "************************************************************"
+echo -e "*         Remove Firewall Services/Rules in Mariadb        *"
+echo -e "************************************************************"
 service_id=$(mysql -uroot ombutel -e "select firewall_service_id from ombu_firewall_services where name = 'MariaDB Client'" | awk 'NR==2')
 mysql -uroot ombutel -e "DELETE FROM ombu_firewall_rules WHERE firewall_service_id = $service_id"
 service_id=$(mysql -uroot ombutel -e "select firewall_service_id from ombu_firewall_services where name = 'HA2224'" | awk 'NR==2')
@@ -238,13 +245,13 @@ cat > /etc/my.cnf.d/server.cnf << EOF
 # this is only for embedded server
 [embedded]
 EOF
-scp /etc/my.cnf.d/server.cnf root@$ip_standby:/etc/my.cnf.d/server.cnf
+scp -P 16022 /etc/my.cnf.d/server.cnf root@$ip_standby:/etc/my.cnf.d/server.cnf
 mysql -uroot -e "STOP SLAVE;"
 mysql -uroot -e "RESET SLAVE;"
 systemctl restart mariadb
-ssh root@$ip_standby 'mysql -uroot -e "STOP SLAVE;"'
-ssh root@$ip_standby 'mysql -uroot -e "RESET SLAVE;"'
-ssh root@$ip_standby "systemctl restart mariadb"
+ssh -p 16022 root@$ip_standby 'mysql -uroot -e "STOP SLAVE;"'
+ssh -p 16022 root@$ip_standby 'mysql -uroot -e "RESET SLAVE;"'
+ssh -p 16022 root@$ip_standby "systemctl restart mariadb"
 
 cat > /etc/lsyncd.conf << EOF
 ----
@@ -253,7 +260,7 @@ cat > /etc/lsyncd.conf << EOF
 -- Simple example for default rsync.
 --
 EOF
-scp /etc/lsyncd.conf root@$ip_standby:/etc/lsyncd.conf
+scp -P 16022 /etc/lsyncd.conf root@$ip_standby:/etc/lsyncd.conf
 cat > /tmp/remotecluster.sh << EOF
 #!/bin/bash
 pcs cluster destroy
@@ -264,28 +271,28 @@ systemctl stop pcsd.service
 systemctl stop corosync.service 
 systemctl stop pacemaker.service
 EOF
-scp /tmp/remotecluster.sh root@$ip_standby:/tmp/remotecluster.sh
-ssh root@$ip_standby "chmod +x /tmp/remotecluster.sh"
-ssh root@$ip_standby "/tmp/./remotecluster.sh"	
+scp -P 16022 /tmp/remotecluster.sh root@$ip_standby:/tmp/remotecluster.sh
+ssh -p 16022 root@$ip_standby "chmod +x /tmp/remotecluster.sh"
+ssh -p 16022 root@$ip_standby "/tmp/./remotecluster.sh"	
 systemctl stop lsyncd
 systemctl enable asterisk
 systemctl restart asterisk
-ssh root@$ip_standby "systemctl stop lsyncd"
-ssh root@$ip_standby "systemctl enable asterisk"
-ssh root@$ip_standby "systemctl restart asterisk"
-echo -e "**********************************************************************************"
-echo -e "*  Removendo as regras de firewall de memória no servidor 1 e 2 e no aplicativo  *"
-echo -e "**********************************************************************************"
+ssh -p 16022 root@$ip_standby "systemctl stop lsyncd"
+ssh -p 16022 root@$ip_standby "systemctl enable asterisk"
+ssh -p 16022 root@$ip_standby "systemctl restart asterisk"
+echo -e "************************************************************"
+echo -e "*  Remove memory Firewall Rules in Server 1 and 2 and App  *"
+echo -e "************************************************************"
 firewall-cmd --remove-service=high-availability
 firewall-cmd --zone=public --remove-port=3306/tcp
 firewall-cmd --runtime-to-permanent
 firewall-cmd --reload
-ssh root@$ip_standby "firewall-cmd --remove-service=high-availability"
-ssh root@$ip_standby "firewall-cmd --zone=public --remove-port=3306/tcp"
-ssh root@$ip_standby "firewall-cmd --runtime-to-permanent"
-ssh root@$ip_standby "firewall-cmd --reload"
+ssh -p 16022 root@$ip_standby "firewall-cmd --remove-service=high-availability"
+ssh -p 16022 root@$ip_standby "firewall-cmd --zone=public --remove-port=3306/tcp"
+ssh -p 16022 root@$ip_standby "firewall-cmd --runtime-to-permanent"
+ssh -p 16022 root@$ip_standby "firewall-cmd --reload"
 echo -e "************************************************************"
-echo -e "*            Cluster destruído com sucesso                 *"
+echo -e "*            Cluster destroyed successfully                *"
 echo -e "************************************************************"
 		
 	fi
@@ -366,40 +373,40 @@ echo -e "1"	> step.txt
 
 create_hostname:
 echo -e "************************************************************"
-echo -e "*          Criando nome de hosts em Master/Standby         *"
+echo -e "*          Creating hosts name in Master/Standby           *"
 echo -e "************************************************************"
 echo -e "$ip_master \t$host_master" >> /etc/hosts
 echo -e "$ip_standby \t$host_standby" >> /etc/hosts
-ssh root@$ip_standby "echo -e '$ip_master \t$host_master' >> /etc/hosts"
-ssh root@$ip_standby "echo -e '$ip_standby \t$host_standby' >> /etc/hosts"
+ssh -p 16022 root@$ip_standby "echo -e '$ip_master \t$host_master' >> /etc/hosts"
+ssh -p 16022 root@$ip_standby "echo -e '$ip_standby \t$host_standby' >> /etc/hosts"
 echo -e "*** Done Step 2 ***"
 echo -e "2"	> step.txt
 
 rename_tenant_id_in_server2:
 echo -e "************************************************************"
-echo -e "*                Remover locatário no servidor 2           *"
+echo -e "*                Remove Tenant in Server 2                 *"
 echo -e "************************************************************"
-remote_tenant_id=`ssh root@$ip_standby "ls /var//lib/vitalpbx/static/"`
-ssh root@$ip_standby "rm -rf /var/lib/vitalpbx/static/$remote_tenant_id"
+remote_tenant_id=`ssh -p 16022 root@$ip_standby "ls /var//lib/vitalpbx/static/"`
+ssh -p 16022 root@$ip_standby "rm -rf /var/lib/vitalpbx/static/$remote_tenant_id"
 echo -e "*** Done Step 3 ***"
 echo -e "3"	> step.txt
 
 configuring_firewall:
 echo -e "************************************************************"
-echo -e "*             Configurando o Firewall                      *"
+echo -e "*             Configuring Temporal Firewall                *"
 echo -e "************************************************************"
 #Create temporal Firewall Rules in Server 1 and 2
 firewall-cmd --permanent --add-service=high-availability
 firewall-cmd --permanent --zone=public --add-port=3306/tcp
 firewall-cmd --reload
-ssh root@$ip_standby "firewall-cmd --permanent --add-service=high-availability"
-ssh root@$ip_standby "firewall-cmd --permanent --zone=public --add-port=3306/tcp"
-ssh root@$ip_standby "firewall-cmd --reload"
+ssh -p 16022 root@$ip_standby "firewall-cmd --permanent --add-service=high-availability"
+ssh -p 16022 root@$ip_standby "firewall-cmd --permanent --zone=public --add-port=3306/tcp"
+ssh -p 16022 root@$ip_standby "firewall-cmd --reload"
 
-echo -e "*****************************************************************"
-echo -e "*             Configurando o Firewall Permanente                *"
-echo -e "*   Criando serviços de firewall no PABXSERVER no servidor 1    *"
-echo -e "*****************************************************************"
+echo -e "************************************************************"
+echo -e "*             Configuring Permanent Firewall               *"
+echo -e "*   Creating Firewall Services in VitalPBX in Server 1     *"
+echo -e "************************************************************"
 mysql -uroot ombutel -e "INSERT INTO ombu_firewall_services (name, protocol, port) VALUES ('MariaDB Client', 'tcp', '3306')"
 mysql -uroot ombutel -e "INSERT INTO ombu_firewall_services (name, protocol, port) VALUES ('HA2224', 'tcp', '2224')"
 mysql -uroot ombutel -e "INSERT INTO ombu_firewall_services (name, protocol, port) VALUES ('HA3121', 'tcp', '3121')"
@@ -407,10 +414,10 @@ mysql -uroot ombutel -e "INSERT INTO ombu_firewall_services (name, protocol, por
 mysql -uroot ombutel -e "INSERT INTO ombu_firewall_services (name, protocol, port) VALUES ('HA5404-5405', 'udp', '5404-5405')"
 mysql -uroot ombutel -e "INSERT INTO ombu_firewall_services (name, protocol, port) VALUES ('HA21064', 'tcp', '21064')"
 mysql -uroot ombutel -e "INSERT INTO ombu_firewall_services (name, protocol, port) VALUES ('HA9929', 'both', '9929')"
-echo -e "****************************************************************"
-echo -e "*            Configurando o Firewall Permanente                *"
-echo -e "*     Criando regras de firewall no VitalPBX no servidor 1     *"
-echo -e "****************************************************************"
+echo -e "************************************************************"
+echo -e "*             Configuring Permanent Firewall               *"
+echo -e "*     Creating Firewall Rules in VitalPBX in Server 1      *"
+echo -e "************************************************************"
 last_index=$(mysql -uroot ombutel -e "SELECT MAX(\`index\`) AS Consecutive FROM ombu_firewall_rules"  | awk 'NR==2')
 last_index=$last_index+1
 service_id=$(mysql -uroot ombutel -e "select firewall_service_id from ombu_firewall_services where name = 'MariaDB Client'" | awk 'NR==2')
@@ -454,7 +461,7 @@ echo -e "4"	> step.txt
 
 create_lsyncd_config_file:
 echo -e "************************************************************"
-echo -e "*         Configurando lsync no servidor 1 e 2             *"
+echo -e "*          Configure lsync in Server 1 and 2               *"
 echo -e "************************************************************"
 if [ ! -d "/var/spool/asterisk/monitor" ] ;then
 	mkdir /var/spool/asterisk/monitor
@@ -473,20 +480,20 @@ if [ ! -d "/var/lib/vitxi" ] ;then
 fi
 chown -R apache:apache /var/lib/vitxi
 
-ssh root@$ip_standby [[ ! -d /var/spool/asterisk/monitor ]] && ssh root@$ip_standby "mkdir /var/spool/asterisk/monitor" || echo "Path exist";
-ssh root@$ip_standby "chown -R asterisk:asterisk /var/spool/asterisk/monitor"
+ssh -p 16022 root@$ip_standby [[ ! -d /var/spool/asterisk/monitor ]] && ssh -p 16022 root@$ip_standby "mkdir /var/spool/asterisk/monitor" || echo "Path exist";
+ssh -p 16022 root@$ip_standby "chown -R asterisk:asterisk /var/spool/asterisk/monitor"
 
-ssh root@$ip_standby [[ ! -d /usr/share/vitxi ]] && ssh root@$ip_standby "mkdir /usr/share/vitxi" || echo "Path exist";
-ssh root@$ip_standby "chown -R apache:apache /usr/share/vitxi"
+ssh -p 16022 root@$ip_standby [[ ! -d /usr/share/vitxi ]] && ssh -p 16022 root@$ip_standby "mkdir /usr/share/vitxi" || echo "Path exist";
+ssh -p 16022 root@$ip_standby "chown -R apache:apache /usr/share/vitxi"
 
-ssh root@$ip_standby [[ ! -d /usr/share/vitxi/backend ]] && ssh root@$ip_standby "mkdir /usr/share/vitxi/backend" || echo "Path exist";
-ssh root@$ip_standby "chown -R apache:apache /usr/share/vitxi/backend"
+ssh -p 16022 root@$ip_standby [[ ! -d /usr/share/vitxi/backend ]] && ssh -p 16022 root@$ip_standby "mkdir /usr/share/vitxi/backend" || echo "Path exist";
+ssh -p 16022 root@$ip_standby "chown -R apache:apache /usr/share/vitxi/backend"
 
-ssh root@$ip_standby [[ ! -d /usr/share/vitxi/backend/storage ]] && ssh root@$ip_standby "mkdir /usr/share/vitxi/backend/storage" || echo "Path exist";
-ssh root@$ip_standby "chown -R apache:apache /usr/share/vitxi/backend/storage"
+ssh -p 16022 root@$ip_standby [[ ! -d /usr/share/vitxi/backend/storage ]] && ssh -p 16022 root@$ip_standby "mkdir /usr/share/vitxi/backend/storage" || echo "Path exist";
+ssh -p 16022 root@$ip_standby "chown -R apache:apache /usr/share/vitxi/backend/storage"
 
-ssh root@$ip_standby [[ ! -d /var/lib/vitxi ]] && ssh root@$ip_standby "mkdir /var/lib/vitxi" || echo "Path exist";
-ssh root@$ip_standby "chown -R apache:apache /var/lib/vitxi"
+ssh -p 16022 root@$ip_standby [[ ! -d /var/lib/vitxi ]] && ssh -p 16022 root@$ip_standby "mkdir /var/lib/vitxi" || echo "Path exist";
+ssh -p 16022 root@$ip_standby "chown -R apache:apache /var/lib/vitxi"
 
 cat > /etc/lsyncd.conf << EOF
 ----
@@ -768,13 +775,13 @@ sync {
 		}
 }
 EOF
-scp /tmp/lsyncd.conf root@$ip_standby:/etc/lsyncd.conf
+scp -P 16022 /tmp/lsyncd.conf root@$ip_standby:/etc/lsyncd.conf
 echo -e "*** Done Step 5 ***"
 echo -e "5"	> step.txt
 
 create_mariadb_replica:
 echo -e "************************************************************"
-echo -e "*                Criando mariadb replica                   *"
+echo -e "*                Create mariadb replica                    *"
 echo -e "************************************************************"
 #Remove anonymous user from MySQL
 mysql -uroot -e "DELETE FROM mysql.user WHERE User='';"
@@ -803,14 +810,14 @@ position_server_1=`mysql -uroot -e "show master status" | awk 'NR==2 {print $2}'
 
 #Now on the Master-1 server, do a dump of the database MySQL and import it to Master-2
 mysqldump -u root --all-databases > all_databases.sql
-scp all_databases.sql root@$ip_standby:/tmp/all_databases.sql
+scp -P 16022 all_databases.sql root@$ip_standby:/tmp/all_databases.sql
 cat > /tmp/mysqldump.sh << EOF
 #!/bin/bash
 mysql mysql -u root <  /tmp/all_databases.sql 
 EOF
-scp /tmp/mysqldump.sh root@$ip_standby:/tmp/mysqldump.sh
-ssh root@$ip_standby "chmod +x /tmp/mysqldump.sh"
-ssh root@$ip_standby "/tmp/./mysqldump.sh"
+scp -P 16022 /tmp/mysqldump.sh root@$ip_standby:/tmp/mysqldump.sh
+ssh -p 16022 root@$ip_standby "chmod +x /tmp/mysqldump.sh"
+ssh -p 16022 root@$ip_standby "/tmp/./mysqldump.sh"
 
 #Configuration of the Second Master Server (Master-2)
 cat > /tmp/vitalpbx.cnf << EOF
@@ -826,8 +833,8 @@ innodb_log_buffer_size = 64M
 bulk_insert_buffer_size = 64M
 max_allowed_packet = 64M
 EOF
-scp /tmp/vitalpbx.cnf root@$ip_standby:/etc/my.cnf.d/vitalpbx.cnf
-ssh root@$ip_standby "systemctl restart mariadb"
+scp -P 16022 /tmp/vitalpbx.cnf root@$ip_standby:/etc/my.cnf.d/vitalpbx.cnf
+ssh -p 16022 root@$ip_standby "systemctl restart mariadb"
 #Create a new user on the Master-2
 cat > /tmp/grand.sh << EOF
 #!/bin/bash
@@ -835,12 +842,12 @@ mysql -uroot -e "GRANT REPLICATION SLAVE ON *.* to vitalpbx_replica@'%' IDENTIFI
 mysql -uroot -e "FLUSH PRIVILEGES;"
 mysql -uroot -e "FLUSH TABLES WITH READ LOCK;"
 EOF
-scp /tmp/grand.sh root@$ip_standby:/tmp/grand.sh
-ssh root@$ip_standby "chmod +x /tmp/grand.sh"
-ssh root@$ip_standby "/tmp/./grand.sh"
+scp -P 16022 /tmp/grand.sh root@$ip_standby:/tmp/grand.sh
+ssh -p 16022 root@$ip_standby "chmod +x /tmp/grand.sh"
+ssh -p 16022 root@$ip_standby "/tmp/./grand.sh"
 #Get bin_log on Master-2
-file_server_2=`ssh root@$ip_standby 'mysql -uroot -e "show master status;"' | awk 'NR==2 {print $1}'`
-position_server_2=`ssh root@$ip_standby 'mysql -uroot -e "show master status;"' | awk 'NR==2 {print $2}'`
+file_server_2=`ssh -p 16022 root@$ip_standby 'mysql -uroot -e "show master status;"' | awk 'NR==2 {print $1}'`
+position_server_2=`ssh -p 16022 root@$ip_standby 'mysql -uroot -e "show master status;"' | awk 'NR==2 {print $2}'`
 #Stop the slave, add Master-1 to the Master-2 and start slave
 cat > /tmp/change.sh << EOF
 #!/bin/bash
@@ -848,9 +855,9 @@ mysql -uroot -e "STOP SLAVE;"
 mysql -uroot -e "CHANGE MASTER TO MASTER_HOST='$ip_master', MASTER_USER='vitalpbx_replica', MASTER_PASSWORD='vitalpbx_replica', MASTER_LOG_FILE='$file_server_1', MASTER_LOG_POS=$position_server_1;"
 mysql -uroot -e "START SLAVE;"
 EOF
-scp /tmp/change.sh root@$ip_standby:/tmp/change.sh
-ssh root@$ip_standby "chmod +x /tmp/change.sh"
-ssh root@$ip_standby "/tmp/./change.sh"
+scp -P 16022 /tmp/change.sh root@$ip_standby:/tmp/change.sh
+ssh -p 16022 root@$ip_standby "chmod +x /tmp/change.sh"
+ssh -p 16022 root@$ip_standby "/tmp/./change.sh"
 
 #Connect to Master-1 and follow the same steps
 mysql -uroot -e "STOP SLAVE;"
@@ -862,31 +869,31 @@ echo -e "6"	> step.txt
 
 create_hacluster_password:
 echo -e "************************************************************"
-echo -e "*     Criar senha para hacluster em Master/Standby         *"
+echo -e "*     Create password for hacluster in Master/Standby      *"
 echo -e "************************************************************"
 echo $hapassword | passwd --stdin hacluster
-ssh root@$ip_standby "echo $hapassword | passwd --stdin hacluster"
+ssh -p 16022 root@$ip_standby "echo $hapassword | passwd --stdin hacluster"
 echo -e "*** Done Step 7 ***"
 echo -e "7"	> step.txt
 
 starting_pcs:
 echo -e "************************************************************"
-echo -e "*         Iniciando serviços pcsd em Master/Standby        *"
+echo -e "*         Starting pcsd services in Master/Standby         *"
 echo -e "************************************************************"
 systemctl start pcsd
-ssh root@$ip_standby "systemctl start pcsd"
+ssh -p 16022 root@$ip_standby "systemctl start pcsd"
 systemctl enable pcsd.service 
 systemctl enable corosync.service 
 systemctl enable pacemaker.service
-ssh root@$ip_standby "systemctl enable pcsd.service"
-ssh root@$ip_standby "systemctl enable corosync.service"
-ssh root@$ip_standby "systemctl enable pacemaker.service"
+ssh -p 16022 root@$ip_standby "systemctl enable pcsd.service"
+ssh -p 16022 root@$ip_standby "systemctl enable corosync.service"
+ssh -p 16022 root@$ip_standby "systemctl enable pacemaker.service"
 echo -e "*** Done Step 8 ***"
 echo -e "8"	> step.txt
 
 auth_hacluster:
 echo -e "************************************************************"
-echo -e "*            Server autenticando no Master                 *"
+echo -e "*            Server Authenticate in Master                 *"
 echo -e "************************************************************"
 pcs cluster auth $host_master $host_standby -u hacluster -p $hapassword
 echo -e "*** Done Step 9 ***"
@@ -894,7 +901,7 @@ echo -e "9"	> step.txt
 
 creating_cluster:
 echo -e "************************************************************"
-echo -e "*              Criando cluster no master                   *"
+echo -e "*              Creating Cluster in Master                  *"
 echo -e "************************************************************"
 pcs cluster setup --name cluster_vitalpbx $host_master $host_standby
 echo -e "*** Done Step 10 ***"
@@ -902,7 +909,7 @@ echo -e "10"	> step.txt
 
 starting_cluster:
 echo -e "************************************************************"
-echo -e "*              Iniciando o cluster no master               *"
+echo -e "*              Starting Cluster in Master                  *"
 echo -e "************************************************************"
 pcs cluster start --all
 pcs cluster enable --all
@@ -913,7 +920,7 @@ echo -e "11"	> step.txt
 
 creating_floating_ip:
 echo -e "************************************************************"
-echo -e "*            Criando IP flutuante no mestre                *"
+echo -e "*            Creating Floating IP in Master                *"
 echo -e "************************************************************"
 pcs resource create virtual_ip ocf:heartbeat:IPaddr2 ip=$ip_floating cidr_netmask=$ip_floating_mask op monitor interval=30s on-fail=restart
 pcs cluster cib drbd_cfg
@@ -922,23 +929,23 @@ echo -e "*** Done Step 12 ***"
 echo -e "12"	> step.txt
 
 disable_services:
-echo -e "****************************************************************"
-echo -e "*             Desabilitar serviços no servidor 1 e 2           *"
-echo -e "****************************************************************"
+echo -e "************************************************************"
+echo -e "*             Disable Services in Server 1 and 2           *"
+echo -e "************************************************************"
 systemctl disable asterisk
 systemctl stop asterisk
 systemctl disable lsyncd
 systemctl stop lsyncd
-ssh root@$ip_standby "systemctl disable asterisk"
-ssh root@$ip_standby "systemctl stop asterisk"
-ssh root@$ip_standby "systemctl disable lsyncd"
-ssh root@$ip_standby "systemctl stop lsyncd"
+ssh -p 16022 root@$ip_standby "systemctl disable asterisk"
+ssh -p 16022 root@$ip_standby "systemctl stop asterisk"
+ssh -p 16022 root@$ip_standby "systemctl disable lsyncd"
+ssh -p 16022 root@$ip_standby "systemctl stop lsyncd"
 echo -e "*** Done Step 13 ***"
 echo -e "13"	> step.txt
 
 create_asterisk_service:
 echo -e "************************************************************"
-echo -e "*          Criando serviço asterisk no servidor 1          *"
+echo -e "*          Create asterisk Service in Server 1             *"
 echo -e "************************************************************"
 pcs resource create asterisk service:asterisk op monitor interval=30s
 pcs cluster cib fs_cfg
@@ -957,7 +964,7 @@ echo -e "14"	> step.txt
 
 create_lsyncd_service:
 echo -e "************************************************************"
-echo -e "*             Criar serviço lsyncd no servidor 1           *"
+echo -e "*             Create lsyncd Service in Server 1            *"
 echo -e "************************************************************"
 pcs resource create lsyncd service:lsyncd.service op monitor interval=30s
 pcs cluster cib fs_cfg
@@ -969,11 +976,14 @@ echo -e "*** Done Step 15 ***"
 echo -e "15"	> step.txt
 
 vitalpbx_create_bascul:
-echo -e "*****************************************************************"
-echo -e "*         Criando o Comando Bascul no PABXSERVER Cluster        *"
-echo -e "*****************************************************************"
+echo -e "************************************************************"
+echo -e "*         Creating VitalPBX Cluster bascul Command         *"
+echo -e "************************************************************"
 cat > /usr/local/bin/bascul << EOF
 #!/bin/bash
+# This code is the property of VitalPBX LLC Company
+# License: Proprietary
+# Date: 30-Jul-2020
 # Change the status of the servers, the Master goes to Stanby and the Standby goes to Master.
 #funtion for draw a progress bar
 #You must pass as argument the amount of secconds that the progress bar will run
@@ -1021,12 +1031,12 @@ if [ "\$arg" = 'yes' ] ;then
 fi
 
 # Print a warning message and ask to the user if he wants to continue
-echo -e "**************************************************************************"
-echo -e "*     Alterar as funções dos servidores em alta disponibilidade          *"
-echo -e "*\e[41m WARNING-WARNING-WARNING-WARNING-WARNING-WARNING-WARNING  \e[0m   *"
-echo -e "*Todas as chamadas em andamento serão perdidas e o sistema ficará        *"
-echo -e "*     em um estado indisponível por alguns segundos.                     *"
-echo -e "**************************************************************************"
+echo -e "************************************************************"
+echo -e "*     Change the roles of servers in high availability     *"
+echo -e "*\e[41m WARNING-WARNING-WARNING-WARNING-WARNING-WARNING-WARNING  \e[0m*"
+echo -e "*All calls in progress will be lost and the system will be *"
+echo -e "*     be in an unavailable state for a few seconds.        *"
+echo -e "************************************************************"
 
 #Perform a loop until the users confirm if wants to proceed or not
 while [[ \$perform_bascul != yes && \$perform_bascul != no ]]; do
@@ -1066,21 +1076,20 @@ sleep 5
 role
 EOF
 chmod +x /usr/local/bin/bascul
-#adicionado comando bascul ao usuario pabxserver.
-cp /usr/local/bin/bascul /home/pabxserver/
-scp /usr/local/bin/bascul root@$ip_standby:/usr/local/bin/bascul
-scp /home/pabxserver/bascul root@$ip_standby:/home/pabxserver/bascul
-ssh root@$ip_standby 'chmod +x /usr/local/bin/bascul'
-ssh root@$ip_standby 'chmod +x /home/pabxserver/bascul'
+scp -P 16022 /usr/local/bin/bascul root@$ip_standby:/usr/local/bin/bascul
+ssh -p 16022 root@$ip_standby 'chmod +x /usr/local/bin/bascul'
 echo -e "*** Done Step 16 ***"
 echo -e "16"	> step.txt
 
 vitalpbx_create_role:
-echo -e "*********************************************************************"
-echo -e "*    ROLE     Criando o comando de função de cluster PABXSERVER     *"
-echo -e "*********************************************************************"
+echo -e "************************************************************"
+echo -e "*         Creating VitalPBX Cluster role Command           *"
+echo -e "************************************************************"
 cat > /usr/local/bin/role << EOF
 #!/bin/bash
+# This code is the property of VitalPBX LLC Company
+# License: Proprietary
+# Date: 30-Jul-2020
 # Show the Role of Server.
 #Bash Colour Codes
 green="\033[00;32m"
@@ -1107,11 +1116,12 @@ else
 		server_mode="Standby"
 fi
 logo='
-    ____      __       ____
-   /  _/___  / /____  / / /_  _________ ______
-   / // __ \/ __/ _ \/ / __ \/ ___/ __ \`/ ___/
- _/ // / / / /_/  __/ / /_/ / /  / /_/ (__  )
-/___/_/ /_/\__/\___/_/_.___/_/   \__,_/____/
+ _    _ _           _ ______ ______ _    _
+| |  | (_)_        | (_____ (____  \ \  / /
+| |  | |_| |_  ____| |_____) )___)  ) \/ /
+ \ \/ /| |  _)/ _  | |  ____/  __  ( )  (
+  \  / | | |_( ( | | | |    | |__)  ) /\ \\
+   \/  |_|\___)_||_|_|_|    |______/_/  \_\\
 '
 echo -e "
 \${green}
@@ -1131,7 +1141,7 @@ echo -e "
 "
 echo -e ""
 echo -e "************************************************************"
-echo -e "*                  Status dos servidores                   *"
+echo -e "*                  Servers Status                          *"
 echo -e "************************************************************"
 echo -e "Master"
 pcs status resources
@@ -1140,33 +1150,30 @@ echo -e "Servers Status"
 pcs cluster pcsd-status
 EOF
 chmod +x /usr/local/bin/role
-cp /usr/local/bin/role /home/pabxserver
-scp /usr/local/bin/role root@$ip_standby:/usr/local/bin/role
-scp /home/pabxserver/role root@$ip_standby:/home/pabxserver/role
-ssh root@$ip_standby 'chmod +x /usr/local/bin/role'
-ssh root@$ip_standby 'chmod +x /home/pabxserver/role'
+scp -P 16022 /usr/local/bin/role root@$ip_standby:/usr/local/bin/role
+ssh -p 16022 root@$ip_standby 'chmod +x /usr/local/bin/role'
 echo -e "*** Done Step 17 ***"
 echo -e "17"	> step.txt
 
 ceate_welcome_message:
-echo -e "*******************************************************************"
-echo -e "*              Criando mensagem de boas-vindas                    *"
-echo -e "*******************************************************************"
+echo -e "************************************************************"
+echo -e "*              Creating Welcome message                    *"
+echo -e "************************************************************"
 /bin/cp -rf /usr/local/bin/role /etc/profile.d/vitalwelcome.sh
 chmod 755 /etc/profile.d/vitalwelcome.sh
 echo -e "*** Done ***"
-scp /etc/profile.d/vitalwelcome.sh root@$ip_standby:/etc/profile.d/vitalwelcome.sh
-ssh root@$ip_standby "chmod 755 /etc/profile.d/vitalwelcome.sh"
+scp -P 16022 /etc/profile.d/vitalwelcome.sh root@$ip_standby:/etc/profile.d/vitalwelcome.sh
+ssh -p 16022 root@$ip_standby "chmod 755 /etc/profile.d/vitalwelcome.sh"
 echo -e "*** Done Step 18 END ***"
 echo -e "18"	> step.txt
 
 vitalpbx_cluster_ok:
-echo -e "*********************************************************************"
-echo -e "*                PABXSERVER Cluster OK                              *"
-echo -e "*    Não se preocupe se você ainda vir o status em Parar            *"
-echo -e "*  às vezes você tem que esperar cerca de 30 segundos para          *"
-echo -e "*                 reinicie completamente                            *"
-echo -e "*         após 30 segundos execute o comando: sudo ./role           *"
-echo -e "*********************************************************************"
+echo -e "************************************************************"
+echo -e "*                VitalPBX Cluster OK                       *"
+echo -e "*    Don't worry if you still see the status in Stop       *"
+echo -e "*  sometimes you have to wait about 30 seconds for it to   *"
+echo -e "*                 restart completely                       *"
+echo -e "*         after 30 seconds run the command: role           *"
+echo -e "************************************************************"
 sleep 20
-sudo ./role
+role

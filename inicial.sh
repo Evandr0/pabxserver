@@ -5,7 +5,7 @@
 # Comando para ser executado no linux -> curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/inicial.sh -O --silent && sleep 5 && sed -i 's/\r$//' inicial.sh && chmod +x inicial.sh && ./inicial.sh
 # Comando de teste no gitlab -> curl https://git.intelbras.com.br/ev047953/pabxserver/-/raw/main/inicial.sh -O --silent && sleep 5 && sed -i 's/\r$//' inicial.sh && chmod +x inicial.sh && ./inicial.sh
 # Script instala faz configuração do SO linux, criação de usuarios, ftp e comando avançados para o usuario rbash e por fim instala o software do pabxserver. 
-
+#Versão 1.0
 #################### Copia o sh onde será possível criar o usuario para acesso ao FTP.
 
 
@@ -104,6 +104,9 @@ cat > /home/pabxserver/passo2.sh << EOF
 #!/bin/bash
 ssh-keygen -f /root/.ssh/id_rsa -t rsa -N '' >/dev/null
 echo Criado a chave ssh
+sed -i '$a Port 22' /etc/ssh/sshd_config
+firewall-cmd --reload
+systemctl restart sshd
 EOF
 chmod +x /home/pabxserver/passo2.sh
 
@@ -114,6 +117,12 @@ chmod +x /home/pabxserver/passo2.sh
 cat > '/home/pabxserver/passo3.sh' << 'EOF'
 #!/bin/bash
 sshpass -p centos ssh-copy-id -o StrictHostKeyChecking=no root@$1 -p 16022
+sshpass -p centos ssh-copy-id -o StrictHostKeyChecking=no root@$1
+echo "+:root:$1" >> /etc/security/access.conf
+sed -i '$a +:root:127.0.0.1' /etc/security/access.conf
+sed -i '$a -:root:ALL' /etc/security/access.conf
+sed -i '7a\account required pam_access.so' /etc/pam.d/sshd
+service sshd restart
 EOF
 
 chmod +x /home/pabxserver/passo3.sh
@@ -123,12 +132,12 @@ chmod +x /home/pabxserver/passo3.sh
 ############################################################
 
 
-curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/pabxserverhap22.sh --output /home/pabxserver/pabxserverhap22.sh --silent &
+curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/pabxserverhap.sh --output /home/pabxserver/pabxserverhap.sh --silent &
 pid=$!
 wait $pid
-chmod +x /home/pabxserver/pabxserverhap22.sh
+chmod +x /home/pabxserver/pabxserverhap.sh
 sleep 1
-sed -i 's/\r$//' /home/pabxserver/pabxserverhap22.sh
+sed -i 's/\r$//' /home/pabxserver/pabxserverhap.sh
 ############################################################
 ############################################################
 ############################################################
