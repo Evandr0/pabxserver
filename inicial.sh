@@ -104,7 +104,7 @@ cat > /home/pabxserver/passo2.sh << EOF
 #!/bin/bash
 ssh-keygen -f /root/.ssh/id_rsa -t rsa -N '' >/dev/null
 echo Criado a chave ssh
-sed -i '$a Port 22' /etc/ssh/sshd_config
+echo "Port 22" >> /etc/ssh/sshd_config
 firewall-cmd --reload
 systemctl restart sshd
 EOF
@@ -127,17 +127,17 @@ EOF
 
 chmod +x /home/pabxserver/passo3.sh
 ############################################################
-#Passo 4 - Criação do comando ./pabxserverhap22.sh         #
+#Passo 4 - Criação do comando ./pabxserverha.sh         #
 # Possibilita a instalação de fato do HA                   #
 ############################################################
 
 
-curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/pabxserverhap.sh --output /home/pabxserver/pabxserverhap.sh --silent &
+curl https://raw.githubusercontent.com/Evandr0/pabxserver/main/pabxserverha.sh --output /home/pabxserver/pabxserverha.sh --silent &
 pid=$!
 wait $pid
-chmod +x /home/pabxserver/pabxserverhap.sh
+chmod +x /home/pabxserver/pabxserverha.sh
 sleep 1
-sed -i 's/\r$//' /home/pabxserver/pabxserverhap.sh
+sed -i 's/\r$//' /home/pabxserver/pabxserverha.sh
 ############################################################
 ############################################################
 ############################################################

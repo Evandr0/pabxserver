@@ -1059,19 +1059,20 @@ if [[ "\${perform_bascul}" = "yes" ]]; then
         progress-bar 10
         echo "Done"
 else
-        echo "Nothing to do, bye, bye"
+        echo "Comando bascul não executado. Até logo!"
 fi
 
 sleep 5
-role
+sudo ./role
 EOF
 chmod +x /usr/local/bin/bascul
 #adicionado comando bascul ao usuario pabxserver.
 cp /usr/local/bin/bascul /home/pabxserver/
+ln -s /usr/local/bin/bascul /home/pabxserver/bin/
 scp /usr/local/bin/bascul root@$ip_standby:/usr/local/bin/bascul
-scp /home/pabxserver/bascul root@$ip_standby:/home/pabxserver/bascul
+#scp /home/pabxserver/bascul root@$ip_standby:/home/pabxserver/bascul
 ssh root@$ip_standby 'chmod +x /usr/local/bin/bascul'
-ssh root@$ip_standby 'chmod +x /home/pabxserver/bascul'
+#ssh root@$ip_standby 'chmod +x /home/pabxserver/bascul'
 echo -e "*** Done Step 16 ***"
 echo -e "16"	> step.txt
 
@@ -1140,11 +1141,12 @@ echo -e "Servers Status"
 pcs cluster pcsd-status
 EOF
 chmod +x /usr/local/bin/role
-cp /usr/local/bin/role /home/pabxserver
+#cp /usr/local/bin/role /home/pabxserver
+ln -s /usr/local/bin/role /home/pabxserver/bin/
 scp /usr/local/bin/role root@$ip_standby:/usr/local/bin/role
-scp /home/pabxserver/role root@$ip_standby:/home/pabxserver/role
+#scp /home/pabxserver/role root@$ip_standby:/home/pabxserver/role
 ssh root@$ip_standby 'chmod +x /usr/local/bin/role'
-ssh root@$ip_standby 'chmod +x /home/pabxserver/role'
+#ssh root@$ip_standby 'chmod +x /home/pabxserver/role'
 echo -e "*** Done Step 17 ***"
 echo -e "17"	> step.txt
 
